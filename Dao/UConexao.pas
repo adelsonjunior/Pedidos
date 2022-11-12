@@ -5,7 +5,7 @@ interface
 uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQLDef,
-  FireDAC.Phys.FB, System.SysUtils, FireDAC.DApt, FireDAC.VCLUI.Wait;
+  FireDAC.Phys.FB, System.SysUtils, FireDAC.DApt, FireDAC.VCLUI.Wait, Vcl.Forms, Vcl.Dialogs;
 
 type
   TConexao = class
@@ -29,12 +29,22 @@ uses UfuncsUtils;
 
 procedure TConexao.setConexao;
 begin
-  LeArquivoINI(FDatabase, FUserName, FPassword);
-  FConn.Params.DriverID := 'MySQL';
-  FConn.Params.Database := FDatabase;
-  FConn.Params.UserName := FUserName;
-  FConn.Params.Password := FPassword;
-  FConn.LoginPrompt     := False;
+  try
+    LeArquivoINI(FDatabase, FUserName, FPassword);
+    FConn.Params.DriverID := 'MySQL';
+    FConn.Params.Database := FDatabase;
+    FConn.Params.UserName := FUserName;
+    FConn.Params.Password := FPassword;
+    FConn.LoginPrompt     := False;
+    FConn.Connected       := True;
+    FConn.Connected       := False;
+  except on E: Exception do
+  begin
+    MessageDlg('Erro ao conectar no banco de dados, verifique os parâmetros no arquivo PEDIDOS.ini.'+ e.Message, mtError, [mbOK], 0);
+    Application.Terminate;
+  end;
+  end;
+
 end;
 
 constructor TConexao.Create;
