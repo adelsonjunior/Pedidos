@@ -109,7 +109,7 @@ begin
         EdNumPed.Clear;
       end
       else
-        MessageDlg('Pedido Nº '+EdNumPed.Text+ ' excluído anteriormente.', mtConfirmation, [mbOK], 0);
+        MessageDlg('Pedido não localizdo ou excluído anteriormente.', mtConfirmation, [mbOK], 0);
     end;
   end
   else
